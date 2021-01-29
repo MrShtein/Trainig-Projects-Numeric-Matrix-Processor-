@@ -10,6 +10,7 @@ public class Printer {
         System.out.printf("%s. %s\n", Menu.THIRD.getMenuNumber(), Menu.THIRD.getMenuText());
         System.out.printf("%s. %s\n", Menu.FOURTH.getMenuNumber(), Menu.FOURTH.getMenuText());
         System.out.printf("%s. %s\n", Menu.FIFTH.getMenuNumber(), Menu.FIFTH.getMenuText());
+        System.out.printf("%s. %s\n", Menu.SIXTH.getMenuNumber(), Menu.SIXTH.getMenuText());
         System.out.printf("%s. %s\n", Menu.ZERO.getMenuNumber(), Menu.ZERO.getMenuText());
         printChoicePhrase();
     }

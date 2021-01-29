@@ -7,6 +7,7 @@ public enum Menu {
     THIRD("3", "Multiply matrices"),
     FOURTH("4", "Transpose matrix"),
     FIFTH("5", "Calculate a determinant"),
+    SIXTH("6", "Inverse matrix"),
     ZERO("0", "Exit");
 
     private String menuNumber;
