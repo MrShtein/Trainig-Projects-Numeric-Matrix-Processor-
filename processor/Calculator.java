@@ -73,7 +73,7 @@ public class Calculator {
         } else if (matrix.getRows() == 2) {
             return determinedTwoByTwoMatrix(matrix);
         } else {
-            return 0;
+            return determinedMatrixMoreThenTwoByTwo(matrix);
         }
     }
 
@@ -83,17 +83,35 @@ public class Calculator {
             int newRowAndCol = matrix.getColumns() - 1;
 
             Double digitForMultiply = matrix.content[0][col];
-            if  (digitForMultiply == 0) arrayListOfDetermines.add(0.0);
-
-
+            if  (digitForMultiply == 0) {
+                arrayListOfDetermines.add(0.0);
+                continue;
+            } else {
+                Matrix newMatrix = matrixForDetermined(col, matrix);
+                double tempDigit = digitForMultiply * determinedMatrix(newMatrix);
+                arrayListOfDetermines.add(tempDigit);
+            }
         }
+        return multiplyDigitsFromDeterminedMatrices(arrayListOfDetermines);
+    }
+
+    public double multiplyDigitsFromDeterminedMatrices(ArrayList<Double> arrayList) {
+        double result = 0;
+        for (int i = 0; i < arrayList.size(); i++) {
+            if (i % 2 == 0) {
+                result += arrayList.get(i);
+            } else {
+                result -= arrayList.get(i);
+            }
+        }
+        return result;
     }
 
     public Matrix matrixForDetermined(int districtColumnAndRow, Matrix matrix) {
-        Matrix newMatrix = new Matrix(matrix.getRows() - 1, matrix.getColumns());
+        Matrix newMatrix = new Matrix(matrix.getRows() - 1, matrix.getColumns() - 1);
 
         for (int row = 0, newRow = 0; row < matrix.getRows(); row++) {
-            if (row != districtColumnAndRow) {
+            if (row != 0) {
                 for (int col = 0, newCol = 0; col < matrix.getColumns(); col++) {
                     if (col != districtColumnAndRow) {
                         newMatrix.content[newRow][newCol] = matrix.content[row][col];
