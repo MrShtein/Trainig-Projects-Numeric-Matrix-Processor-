@@ -31,7 +31,6 @@ public class Calculator {
                 printer.printErrorOutOfNumberInMenu();
             }
         }
-
     }
 
     public void selectTheMenuItem(int menuItem) {
@@ -51,7 +50,39 @@ public class Calculator {
             case 4:
                 transposeMatrixMenu();
                 break;
+            case 5:
+                determined();
         }
+    }
+
+    public void determined() {
+        Matrix matrix = makeMatrix(0);;
+        if (matrix == null || matrix.getRows() != matrix.getColumns()) {
+            printer.printErrorIncorrectData();
+            return;
+        }
+
+        double result = determinedMatrix(matrix);
+        printer.printDeterminedResult(result);
+
+    }
+
+    public double determinedMatrix(Matrix matrix) {
+        if (matrix.getRows() == 1) {
+            return matrix.content[0][0];
+        } else if (matrix.getRows() == 2) {
+            return determinedTwoByTwoMatrix(matrix);
+        } else {
+            return 0;
+        }
+    }
+
+    public double determinedTwoByTwoMatrix(Matrix matrix) {
+        double a = matrix.content[0][0];
+        double b = matrix.content[1][1];
+        double c = matrix.content[0][1];
+        double d = matrix.content[1][0];
+        return a * b - c * d;
     }
 
     public void selectTransposeMatrix(int menuItem) {

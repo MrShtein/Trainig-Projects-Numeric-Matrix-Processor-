@@ -9,6 +9,7 @@ public class Printer {
         System.out.printf("%s. %s\n", Menu.SECOND.getMenuNumber(), Menu.SECOND.getMenuText());
         System.out.printf("%s. %s\n", Menu.THIRD.getMenuNumber(), Menu.THIRD.getMenuText());
         System.out.printf("%s. %s\n", Menu.FOURTH.getMenuNumber(), Menu.FOURTH.getMenuText());
+        System.out.printf("%s. %s\n", Menu.FIFTH.getMenuNumber(), Menu.FIFTH.getMenuText());
         System.out.printf("%s. %s\n", Menu.ZERO.getMenuNumber(), Menu.ZERO.getMenuText());
         printChoicePhrase();
     }
@@ -19,6 +20,16 @@ public class Printer {
         System.out.println("3. Vertical line");
         System.out.println("4. Horizontal line");
         printChoicePhrase();
+    }
+
+    public void printDeterminedResult(Double result) {
+        if (new Checker().isDouble(result)) {
+            DecimalFormat df = new DecimalFormat("0.0#");
+            String digit = df.format(result);
+            System.out.printf("The result is:\n%s\n\n", digit);
+        } else {
+            System.out.printf("The result is:\n%d\n\n", result.intValue());
+        }
     }
 
     public void printChoicePhrase() {
@@ -34,7 +45,7 @@ public class Printer {
         if (numberOfMatrix == 1) {
             System.out.printf("\nEnter size of %s matrix: ", "first");
         } else if(numberOfMatrix == 0) {
-            System.out.print("\nEnter size of matrix: ");
+            System.out.print("\nEnter matrix size: ");
         } else {
             System.out.printf("\nEnter size of %s matrix: ", "second");
         }
