@@ -77,6 +77,35 @@ public class Calculator {
         }
     }
 
+    public double determinedMatrixMoreThenTwoByTwo(Matrix matrix) {
+        ArrayList<Double> arrayListOfDetermines = new ArrayList<>();
+        for (int col = 0; col < matrix.getColumns(); col++) {
+            int newRowAndCol = matrix.getColumns() - 1;
+
+            Double digitForMultiply = matrix.content[0][col];
+            if  (digitForMultiply == 0) arrayListOfDetermines.add(0.0);
+
+
+        }
+    }
+
+    public Matrix matrixForDetermined(int districtColumnAndRow, Matrix matrix) {
+        Matrix newMatrix = new Matrix(matrix.getRows() - 1, matrix.getColumns());
+
+        for (int row = 0, newRow = 0; row < matrix.getRows(); row++) {
+            if (row != districtColumnAndRow) {
+                for (int col = 0, newCol = 0; col < matrix.getColumns(); col++) {
+                    if (col != districtColumnAndRow) {
+                        newMatrix.content[newRow][newCol] = matrix.content[row][col];
+                        newCol++;
+                    }
+                }
+                newRow++;
+            }
+        }
+        return newMatrix;
+    }
+
     public double determinedTwoByTwoMatrix(Matrix matrix) {
         double a = matrix.content[0][0];
         double b = matrix.content[1][1];
