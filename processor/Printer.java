@@ -15,6 +15,10 @@ public class Printer {
         printChoicePhrase();
     }
 
+    public void printErrorMatrixInverse() {
+        System.out.println("This matrix doesn't have an inverse.\n");
+    }
+
     public void printTransposeMenu() {
         System.out.println("1. Main diagonal");
         System.out.println("2. Side diagonal");

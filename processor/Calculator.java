@@ -51,11 +51,28 @@ public class Calculator {
                 transposeMatrixMenu();
                 break;
             case 5:
-                determined();
+                getDetermined();
+                break;
+            case 6:
+                inverseMatrix();
         }
     }
 
-    public void determined() {
+    public void inverseMatrix() {
+        Matrix matrix = makeMatrix(0);
+        if (matrix == null) {
+            printer.printErrorIncorrectData();
+            return;
+        }
+        double determinant = determinedMatrix(matrix);
+        if (determinant == 0) {
+            printer.printErrorMatrixInverse();
+            return;
+        }
+
+    }
+
+    public void getDetermined() {
         Matrix matrix = makeMatrix(0);;
         if (matrix == null || matrix.getRows() != matrix.getColumns()) {
             printer.printErrorIncorrectData();

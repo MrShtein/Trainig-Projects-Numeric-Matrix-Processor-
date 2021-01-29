@@ -3,7 +3,7 @@ package processor;
 public class Checker {
 
     public boolean isCorrectMenuValue(int value) {
-        if (value < 0 || value > 5) {
+        if (value < 0 || value > 6) {
             return false;
         } else {
             return true;
@@ -13,7 +13,7 @@ public class Checker {
     public boolean checkMenuItem(String menuItem) {
         if (menuItem.matches("\\d")) {
             int tempMenuItem = Integer.parseInt(menuItem);
-            return tempMenuItem >= 0 && tempMenuItem <= 5;
+            return tempMenuItem >= 0 && tempMenuItem <= 6;
         }
         return false;
     }
