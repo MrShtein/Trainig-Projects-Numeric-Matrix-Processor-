@@ -64,12 +64,49 @@ public class Calculator {
             printer.printErrorIncorrectData();
             return;
         }
+
         double determinant = determinedMatrix(matrix);
+
         if (determinant == 0) {
             printer.printErrorMatrixInverse();
             return;
         }
 
+        Matrix transposeMatrixWithMinors = mainDiagonalTranspose(getMatrixWhitMinors(matrix));
+        Double firstRes = 1.0 / determinant;
+        Matrix res = constantMultiply(transposeMatrixWithMinors, firstRes, new Matrix(matrix.getRows(), matrix.getColumns()));
+        printer.printMatrix(res);
+
+
+
+    }
+
+    public Matrix getMinorForMatrixTwoByTwo(Matrix matrix) {
+        Matrix matrixWithMinors = new Matrix(matrix.getRows(), matrix.getColumns());
+        matrixWithMinors.content[0][0] = matrix.content[1][1];
+        matrixWithMinors.content[0][1] = matrix.content[1][0];
+        matrixWithMinors.content[1][0] = matrix.content[0][1];
+        matrixWithMinors.content[1][1] = matrix.content[0][0];
+        return matrixWithMinors;
+    }
+
+
+
+
+
+    public Matrix getMatrixWhitMinors(Matrix matrix) {
+        Matrix matrixWithMinors = new Matrix(matrix.getRows(), matrix.getColumns());
+
+        if (matrix.getRows() == 2) {
+            return getMinorForMatrixTwoByTwo(matrix);
+        } else {
+            for (int row = 0; row < matrixWithMinors.getRows(); row++) {
+                for (int col = 0; col < matrixWithMinors.getColumns(); col++) {
+                    matrixWithMinors.content[row][col] = Math.pow(-1, row + col) * determinedMatrix(matrixForDetermined(row, col, matrix));
+                }
+            }
+        }
+        return matrixWithMinors;
     }
 
     public void getDetermined() {
@@ -104,7 +141,7 @@ public class Calculator {
                 arrayListOfDetermines.add(0.0);
                 continue;
             } else {
-                Matrix newMatrix = matrixForDetermined(col, matrix);
+                Matrix newMatrix = matrixForDetermined(0, col, matrix);
                 double tempDigit = digitForMultiply * determinedMatrix(newMatrix);
                 arrayListOfDetermines.add(tempDigit);
             }
@@ -124,13 +161,13 @@ public class Calculator {
         return result;
     }
 
-    public Matrix matrixForDetermined(int districtColumnAndRow, Matrix matrix) {
+    public Matrix matrixForDetermined(int districtRow, int districtColumn, Matrix matrix) {
         Matrix newMatrix = new Matrix(matrix.getRows() - 1, matrix.getColumns() - 1);
 
         for (int row = 0, newRow = 0; row < matrix.getRows(); row++) {
-            if (row != 0) {
+            if (row != districtRow) {
                 for (int col = 0, newCol = 0; col < matrix.getColumns(); col++) {
-                    if (col != districtColumnAndRow) {
+                    if (col != districtColumn) {
                         newMatrix.content[newRow][newCol] = matrix.content[row][col];
                         newCol++;
                     }
@@ -206,17 +243,27 @@ public class Calculator {
         printer.printMatrix(transposedMatrix);
     }
 
-    public void mainDiagonalTranspose() {
-        ArrayList<Matrix> matrixArrayList = doTwoMatrixForTranspose(false);
-        Matrix matrixForTranspose = matrixArrayList.get(0);
-        Matrix transposedMatrix = matrixArrayList.get(1);
+    public Matrix mainDiagonalTranspose(Matrix matrixForTranspose) {
+        Matrix transposedMatrix = new Matrix(matrixForTranspose.getRows(), matrixForTranspose.getColumns());
+        doMatrix(matrixForTranspose, transposedMatrix);
+        return transposedMatrix;
+    }
 
+    public void doMatrix(Matrix matrixForTranspose, Matrix transposedMatrix) {
         for (int col = 0; col < matrixForTranspose.getColumns(); col++) {
             for (int row = 0; row < matrixForTranspose.getRows(); row++) {
                 double first = matrixForTranspose.content[row][col];
                 transposedMatrix.content[col][row] = matrixForTranspose.content[row][col];
             }
         }
+    }
+
+    public void mainDiagonalTranspose() {
+        ArrayList<Matrix> matrixArrayList = doTwoMatrixForTranspose(false);
+        Matrix matrixForTranspose = matrixArrayList.get(0);
+        Matrix transposedMatrix = matrixArrayList.get(1);
+
+        doMatrix(matrixForTranspose, transposedMatrix);
         printer.printMatrix(transposedMatrix);
     }
 
@@ -243,6 +290,18 @@ public class Calculator {
         selectTransposeMatrix(collector.makeChoice(printer));
     }
 
+    public void multiply(Matrix firstMatrix, Matrix secondMatrix, Matrix result) {
+        for (int rows = 0; rows < firstMatrix.getRows(); rows++) {
+            for (int columns = 0; columns < secondMatrix.getColumns(); columns++) {
+                double multiplyResult = 0;
+                for (int i = 0; i < firstMatrix.getColumns(); i++) {
+                    multiplyResult += firstMatrix.content[rows][i] * secondMatrix.content[i][columns];
+                }
+                result.content[rows][columns] = multiplyResult;
+            }
+        }
+    }
+
     public void multiplyMatrices() {
         while (true) {
             Matrix firstMatrix = makeMatrix(1);
@@ -250,15 +309,7 @@ public class Calculator {
             Matrix result = new Matrix(firstMatrix.getRows(), secondMatrix.getColumns());
 
             if (firstMatrix.getColumns() == secondMatrix.getRows()) {
-                for (int rows = 0; rows < firstMatrix.getRows(); rows++) {
-                    for (int columns = 0; columns < secondMatrix.getColumns(); columns++) {
-                        double multiplyResult = 0;
-                        for (int i = 0; i < firstMatrix.getColumns(); i++) {
-                            multiplyResult += firstMatrix.content[rows][i] * secondMatrix.content[i][columns];
-                        }
-                        result.content[rows][columns] = multiplyResult;
-                    }
-                }
+                multiply(firstMatrix, secondMatrix, result);
                 printer.printMatrix(result);
                 break;
             } else {
@@ -266,6 +317,15 @@ public class Calculator {
             }
         }
 
+    }
+
+    public Matrix constantMultiply(Matrix matrix, double constant, Matrix result) {
+        for (int rows = 0; rows < result.getRows(); rows++) {
+            for (int columns = 0; columns < result.getColumns(); columns++) {
+                result.content[rows][columns] = constant * matrix.content[rows][columns];
+            }
+        }
+        return result;
     }
 
 
